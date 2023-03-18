@@ -21,8 +21,18 @@ const createConversationGrupal = async(req,res,next) => {
         next(error)
     }
 }
+const getParticipantsAndMessages = async(req,res,next) =>{
+    try {
+        const {idParticipants} = req.params;
+        const participantsAndMessages = await ConversationService.participantsAndMessages(idParticipants);
+        res.json(participantsAndMessages);
+    } catch (error) {
+        next(error);
+    }
+}
 
 module.exports = {
     createConversation,
-    createConversationGrupal
+    createConversationGrupal,
+    getParticipantsAndMessages
 }

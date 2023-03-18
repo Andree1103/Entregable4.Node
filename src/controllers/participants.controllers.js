@@ -10,6 +10,17 @@ const getParticipanteWithConver = async(req,res,next) => {
     }
 }
 
+const getParticipantsAndMessages = async(req,res,next) =>{
+    try {
+        const {idParticipants} = req.getParticipantsAndMessages;
+        const participantsAndMessages = await ParticipantsService.participantsAndMessages(idParticipants);
+        res.json(participantsAndMessages);
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
-    getParticipanteWithConver
+    getParticipanteWithConver,
+    getParticipantsAndMessages
 }

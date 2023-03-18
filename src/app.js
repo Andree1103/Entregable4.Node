@@ -6,7 +6,9 @@ const userRoute = require('./routes/user.routes')
 const converRoute= require('./routes/conversation.routes')
 const partiRoute= require('./routes/participants.routes')
 const messRoute = require('./routes/messages.routes')
+const autRoute= require('./routes/auth.routes')
 const initModels = require("./models/init.models")
+const errorHandlerRouter = require('./routes/errorHandler.routes')
 
 const app = express()
 initModels();
@@ -33,10 +35,13 @@ app.use(userRoute)
 app.use(converRoute)
 app.use(partiRoute)
 app.use(messRoute)
+app.use(autRoute)
 
 app.get('/', (req, res) => {
   res.send('Welcome to my API');
 });
+
+errorHandlerRouter(app);
 
 app.listen(PORT,() =>{
   console.log(`servidor funcionando en el puerto ${PORT}`);

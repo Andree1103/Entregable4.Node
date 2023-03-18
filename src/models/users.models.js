@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../utils/database");
+const bcrypt = require('bcrypt')
 
 const Users = db.define('users', {
     id: {
@@ -38,6 +39,19 @@ const Users = db.define('users', {
         type: DataTypes.INTEGER,
         allowNull: false,
         field: 'avatar_id'
+    }
+}, {
+    //encriptar contraseña
+    hooks:{
+      beforeCreate: async (user) => {
+        try {
+          const salt = await bcrypt.genSalt(10);
+          const passwordHash = await bcrypt.hash(user.password, salt);
+          user.password = passwordHash
+        } catch (error) {
+          throw error
+        }
+      }
     }
 })
 

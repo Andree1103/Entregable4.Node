@@ -1,5 +1,7 @@
 const Conversation = require("../models/conversations.models");
+const Messages = require("../models/messages.models");
 const Participants = require("../models/participants.models");
+const Users = require("../models/users.models");
 
 class ConversationService {
     static async create(newCon,idParti) {
@@ -26,6 +28,30 @@ class ConversationService {
                 { userId:newc.createdBy, conversationsId:conver.id}
             ])
             return conver;
+        } catch (error) {
+            throw error;
+        }
+    }
+    static async participantsAndMessages(idParticipants) {
+        try {
+            const result = await Conversation.findByPk(idParticipants, {
+                attributes: ['id','title','createdBy'],
+                include: [
+                    {
+                        model:Participants,
+                        attributes: ['user_id'],
+                        include: {
+                            model:Users,
+                            attributes:['username','email']
+                        }
+                    },
+                    {
+                        model:Messages,
+                        attributes:['id','messages']
+                    }
+                ]
+            })
+            return result;
         } catch (error) {
             throw error;
         }
